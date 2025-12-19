@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 记得修改每个文件的 title -->
+    <title>项目详情 | Project Detail</title>
+    <style>
+        /* --- 全局样式 (Desktop Optimized) --- */
+        :root {
+            --bg-color: #050505;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --cursor-size: 15px;
+            --container-width: 1400px; /* 内容最大宽度 */
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body {
+            background-color: var(--bg-color); color: var(--text-primary);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            opacity: 0; animation: fadeIn 1s ease forwards;
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+        a { text-decoration: none; color: inherit; }
+        img { display: block; width: 100%; height: auto; border-radius: 4px; }
+
+        /* 光标 */
+        #cursor {
+            position: fixed; top: 0; left: 0; width: var(--cursor-size); height: var(--cursor-size);
+            background: white; border-radius: 50%; pointer-events: none;
+            mix-blend-mode: difference; z-index: 9999; transform: translate(-50%, -50%);
+            transition: transform 0.2s ease;
+        }
+        #cursor.active { transform: translate(-50%, -50%) scale(4); }
+
+        /* 导航 */
+        nav {
+            padding: 40px 60px; display: flex; justify-content: space-between;
+            position: fixed; top: 0; width: 100%; z-index: 100; mix-blend-mode: difference;
+        }
+        .back-btn { font-size: 14px; text-transform: uppercase; border-bottom: 1px solid transparent; }
+        .back-btn:hover { border-bottom: 1px solid white; }
+
+        /* --- 主要内容区 --- */
+        /* Hero 适配优化 */
+        .project-hero {
+            padding: 180px 60px 100px; border-bottom: 1px solid #222;
+            max-width: 1600px; margin: 0 auto;
+        }
+        .hero-title {
+            font-size: clamp(50px, 7vw, 120px); font-weight: 700; line-height: 1.1;
+            margin-bottom: 80px; text-transform: uppercase;
+        }
+        
+        /* Info Grid 适配 */
+        .info-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+        }
+        .info-item h4 { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .info-item p { font-size: 18px; font-weight: 500; }
+
+        /* 正文内容区 适配 */
+        .content-section {
+            padding: 120px 60px; max-width: var(--container-width); margin: 0 auto;
+        }
+        
+        /* 文本块居中优化 */
+        .text-block {
+            max-width: 720px; margin: 0 auto 120px; /* 居中显示，阅读体验更好 */
+        }
+        .text-block h3 { font-size: 2.2rem; margin-bottom: 30px; font-weight: 500; }
+        .text-block p { font-size: 1.15rem; color: #ccc; line-height: 1.8; margin-bottom: 25px; }
+
+        /* 图片布局 */
+        .full-img { width: 100%; margin-bottom: 120px; }
+        
+        .two-col-img {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 120px;
+        }
+        /* 竖图/UI 专用样式 */
+        .vertical-mode img { aspect-ratio: 3/4; object-fit: cover; background: #111; }
+        .square-mode img { aspect-ratio: 1/1; object-fit: cover; background: #111; }
+
+        /* 底部跳转 */
+        .next-project {
+            padding: 150px 60px; background: #0f0f0f; text-align: center; display: block;
+            transition: background 0.3s;
+        }
+        .next-project:hover { background: #1a1a1a; }
+        .next-title { font-size: clamp(40px, 5vw, 80px); font-weight: 700; text-transform: uppercase; color: white; }
+
+        /* 动画类 */
+        .reveal-up { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+        .in-view { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .project-hero, .content-section { padding: 40px 30px; }
+            .hero-title { font-size: 12vw; margin-bottom: 40px; }
+            .info-grid, .two-col-img { grid-template-columns: 1fr; gap: 40px; }
+            .text-block { margin-bottom: 80px; }
+            #cursor { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="cursor"></div>
+    <nav>
+        <a href="index.html" class="logo hover-target" style="font-weight:700;">LI YUTING.</a>
+        <a href="index.html" class="back-btn hover-target">Close / Back</a>
+    </nav>
+
+    <!-- !!! 核心内容替换区开始 (Replace Content Here) !!! -->
+    <main>
+       <!-- 这里的内容根据<main>
+        <header class="project-hero">
+            <h1 class="hero-title reveal-up">Illustration<br>Selected Works</h1>
+            <div class="info-grid reveal-up">
+                <div class="info-item"><h4>Type</h4><p>Digital Art</p></div>
+                <div class="info-item"><h4>Score</h4><p>90 (优)</p></div>
+                <div class="info-item"><h4>Tools</h4><p>Procreate / PS</p></div>
+                <div class="info-item"><h4>Style</h4><p>Thick coating/Flat coating/Multi-style</p></div>
+            </div>
+        </header>
+
+        <section class="content-section">
+            <div class="full-img reveal-up hover-target">
+                <img src="images/draw1.jpg" alt="Main Art">
+            </div>
+
+            <div class="text-block reveal-up">
+                <h3>插画与衍生品</h3>
+                <p>收录多系列课程与个人手绘创作，涵盖多样画风，展现手绘插画的丰富质感与创意灵感。</p>
+            </div>
+
+            <!-- 使用 square-mode 展示正方形插画 -->
+            <div class="two-col-img square-mode reveal-up">
+                <img src="images/draw2.jpg" alt="Art Piece 1">
+                <img src="images/draw3.jpg" alt="Art Piece 2">
+            </div>
+
+            <div class="full-img reveal-up hover-target">
+                <img src="images/draw4.jpg" alt="Mockup">
+            </div>
+        </section>
+
+        <a href="project-poster.html" class="next-project hover-target">
+            <div style="color:#888; margin-bottom:15px;">Next Project</div>
+            <div class="next-title">海报设计展示</div>
+        </a>
+    </main>下方的内容包进行粘贴 -->
+    </main>
+    <!-- !!! 核心内容替换区结束 !!! -->
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+        document.querySelectorAll('.hover-target').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+        });
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

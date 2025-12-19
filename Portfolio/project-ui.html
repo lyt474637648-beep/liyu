@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 记得修改每个文件的 title -->
+    <title>项目详情 | Project Detail</title>
+    <style>
+        /* --- 全局样式 (Desktop Optimized) --- */
+        :root {
+            --bg-color: #050505;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --cursor-size: 15px;
+            --container-width: 1400px; /* 内容最大宽度 */
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body {
+            background-color: var(--bg-color); color: var(--text-primary);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            opacity: 0; animation: fadeIn 1s ease forwards;
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+        a { text-decoration: none; color: inherit; }
+        img { display: block; width: 100%; height: auto; border-radius: 4px; }
+
+        /* 光标 */
+        #cursor {
+            position: fixed; top: 0; left: 0; width: var(--cursor-size); height: var(--cursor-size);
+            background: white; border-radius: 50%; pointer-events: none;
+            mix-blend-mode: difference; z-index: 9999; transform: translate(-50%, -50%);
+            transition: transform 0.2s ease;
+        }
+        #cursor.active { transform: translate(-50%, -50%) scale(4); }
+
+        /* 导航 */
+        nav {
+            padding: 40px 60px; display: flex; justify-content: space-between;
+            position: fixed; top: 0; width: 100%; z-index: 100; mix-blend-mode: difference;
+        }
+        .back-btn { font-size: 14px; text-transform: uppercase; border-bottom: 1px solid transparent; }
+        .back-btn:hover { border-bottom: 1px solid white; }
+
+        /* --- 主要内容区 --- */
+        /* Hero 适配优化 */
+        .project-hero {
+            padding: 180px 60px 100px; border-bottom: 1px solid #222;
+            max-width: 1600px; margin: 0 auto;
+        }
+        .hero-title {
+            font-size: clamp(50px, 7vw, 120px); font-weight: 700; line-height: 1.1;
+            margin-bottom: 80px; text-transform: uppercase;
+        }
+        
+        /* Info Grid 适配 */
+        .info-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+        }
+        .info-item h4 { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .info-item p { font-size: 18px; font-weight: 500; }
+
+        /* 正文内容区 适配 */
+        .content-section {
+            padding: 120px 60px; max-width: var(--container-width); margin: 0 auto;
+        }
+        
+        /* 文本块居中优化 */
+        .text-block {
+            max-width: 720px; margin: 0 auto 120px; /* 居中显示，阅读体验更好 */
+        }
+        .text-block h3 { font-size: 2.2rem; margin-bottom: 30px; font-weight: 500; }
+        .text-block p { font-size: 1.15rem; color: #ccc; line-height: 1.8; margin-bottom: 25px; }
+
+        /* 图片布局 */
+        .full-img { width: 100%; margin-bottom: 120px; }
+        
+        .two-col-img {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 120px;
+        }
+        /* 竖图/UI 专用样式 */
+        .vertical-mode img { aspect-ratio: 3/4; object-fit: cover; background: #111; }
+        .square-mode img { aspect-ratio: 1/1; object-fit: cover; background: #111; }
+
+        /* 底部跳转 */
+        .next-project {
+            padding: 150px 60px; background: #0f0f0f; text-align: center; display: block;
+            transition: background 0.3s;
+        }
+        .next-project:hover { background: #1a1a1a; }
+        .next-title { font-size: clamp(40px, 5vw, 80px); font-weight: 700; text-transform: uppercase; color: white; }
+
+        /* 动画类 */
+        .reveal-up { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+        .in-view { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .project-hero, .content-section { padding: 40px 30px; }
+            .hero-title { font-size: 12vw; margin-bottom: 40px; }
+            .info-grid, .two-col-img { grid-template-columns: 1fr; gap: 40px; }
+            .text-block { margin-bottom: 80px; }
+            #cursor { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="cursor"></div>
+    <nav>
+        <a href="index.html" class="logo hover-target" style="font-weight:700;">LI YUTING.</a>
+        <a href="index.html" class="back-btn hover-target">Close / Back</a>
+    </nav>
+
+    <!-- !!! 核心内容替换区开始 (Replace Content Here) !!! -->
+    <main>
+        <header class="project-hero">
+            <h1 class="hero-title reveal-up">一时一蔬<br>Virtual UI Design</h1>
+            <div class="info-grid reveal-up">
+                <div class="info-item"><h4>Role</h4><p>UI / UX Design</p></div>
+                <div class="info-item"><h4>Date</h4><p>2025.05 - 2025.06</p></div>
+                <div class="info-item"><h4>Tech</h4><p>Figma, AIGC</p></div>
+                <div class="info-item"><h4>Type</h4><p>空间计算 / 效率工具</p></div>
+            </div>
+        </header>
+
+        <section class="content-section">
+           <div class="full-img reveal-up hover-target">
+    <video 
+        src="images/ui-video.mp4" 
+        autoplay muted loop playsinline 
+        style="width: 100%; display: block; object-fit: cover;">
+    </video>
+</div>
+
+            <div class="text-block reveal-up">
+                <h3>核心理念“好好吃饭 = 好好生活”</h3>
+                <p>针对18-35岁年轻用户健康饮食痛点，设计了这款基于空间计算的沉浸式电子日历。借鉴 VisionPro 交互优势，填补传统日历功能单一的空白。</p>
+            </div>
+
+            <!-- 注意：使用了 vertical-mode 类来适配竖屏 UI -->
+            <div class="two-col-img vertical-mode reveal-up">
+                <img src="images/ui1.jpg" alt="UI Design 1">
+                <img src="images/ui2.jpg" alt="UI Design 2">
+            </div>
+
+            <div class="text-block reveal-up">
+                <h3>设计细节</h3>
+                <p>采用毛玻璃质感 (Glassmorphism) 以适应复杂的空间背景。通过 3D 蔬菜的生长动画反馈时间的流逝，长按手势即可记录饮食心情。</p>
+            </div>
+
+            <div class="full-img reveal-up hover-target">
+                 <video 
+        src="images/ui3.mp4" 
+        autoplay muted loop playsinline 
+        style="width: 100%; display: block; object-fit: cover;">
+    </video>
+            </div>
+        </section>
+
+        <a href="project-illu.html" class="next-project hover-target">
+            <div style="color:#888; margin-bottom:15px;">Next Project</div>
+            <div class="next-title">插画展示</div>
+        </a>
+    </main>
+    <!-- !!! 核心内容替换区结束 !!! -->
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+        document.querySelectorAll('.hover-target').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+        });
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

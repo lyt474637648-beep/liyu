@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李雨婷 Li Yuting | Portfolio</title>
+    <style>
+        /* --- 全局与重置 --- */
+        :root {
+            --bg-color: #050505;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --cursor-size: 15px;
+            --cursor-hover: 60px;
+            --container-width: 1600px; /* 桌面端最大宽度限制 */
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        
+        /* --- 交互光标 --- */
+        #cursor {
+            position: fixed; top: 0; left: 0; width: var(--cursor-size); height: var(--cursor-size);
+            background: white; border-radius: 50%; pointer-events: none;
+            mix-blend-mode: difference; z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1), height 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        #cursor.active { width: var(--cursor-hover); height: var(--cursor-hover); }
+
+        /* --- 导航栏 --- */
+        header {
+            position: fixed; top: 0; width: 100%; padding: 40px 60px;
+            display: flex; justify-content: space-between; align-items: flex-start;
+            z-index: 100; mix-blend-mode: difference;
+        }
+        .logo { font-size: 24px; font-weight: 700; letter-spacing: -1px; }
+        .nav-list { display: flex; gap: 40px; list-style: none; }
+        .nav-item { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; position: relative; }
+        .nav-item::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px;
+            background: white; transition: width 0.3s ease;
+        }
+        .nav-item:hover::after { width: 100%; }
+
+        /* --- Hero 区域 --- */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column; justify-content: center;
+            padding: 0 60px; position: relative;
+            max-width: var(--container-width); margin: 0 auto; /* 居中限制 */
+        }
+        .hero h1 {
+            /* 智能字体缩放：最小60px，最大180px */
+            font-size: clamp(60px, 9vw, 180px);
+            line-height: 0.85; font-weight: 800; text-transform: uppercase; margin-bottom: 20px;
+        }
+        .hero-desc {
+            font-size: 1.2rem; color: var(--text-secondary); max-width: 800px;
+            margin-top: 40px; line-height: 1.6;
+        }
+        .scroll-hint {
+            position: absolute; bottom: 40px; right: 60px; font-size: 12px; 
+            text-transform: uppercase; animation: float 2s infinite ease-in-out;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+        /* --- 作品列表 --- */
+        .work-section {
+            padding: 10vh 60px; position: relative;
+            max-width: var(--container-width); margin: 0 auto;
+        }
+        .project-list {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 150px 100px; /* 增加间距 */
+            padding-bottom: 20vh;
+        }
+        .project-item { position: relative; display: block; width: 100%; }
+        .project-item:nth-child(even) { margin-top: 25vh; } /* 错位感 */
+
+        .img-mask {
+            width: 100%; height: 65vh; overflow: hidden; position: relative; background: #111;
+        }
+        .project-img {
+            width: 100%; height: 120%; object-fit: cover; opacity: 0.8;
+            transition: opacity 0.4s ease; will-change: transform;
+        }
+        .project-item:hover .project-img { opacity: 1; filter: brightness(1.1); }
+
+        .project-info {
+            margin-top: 25px; border-top: 1px solid #333; padding-top: 15px;
+            display: flex; justify-content: space-between; align-items: flex-start;
+            opacity: 0; transform: translateY(20px); transition: all 0.6s ease;
+        }
+        .project-item.in-view .project-info { opacity: 1; transform: translateY(0); }
+        
+        .p-title { font-size: 1.8rem; font-weight: 500; margin-bottom: 5px; }
+        .p-cat { font-size: 1rem; color: var(--text-secondary); text-transform: uppercase; }
+        .p-index { font-size: 1rem; color: var(--text-secondary); }
+
+        /* --- Footer --- */
+        footer {
+            height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; border-top: 1px solid #222;
+        }
+        footer h2 { font-size: clamp(40px, 5vw, 100px); margin-bottom: 40px; text-transform: uppercase; }
+        .email-link { font-size: clamp(20px, 2vw, 40px); border-bottom: 2px solid transparent; transition: border-color 0.3s; padding-bottom: 5px; }
+        .email-link:hover { border-color: white; }
+        .copyright { margin-top: 100px; color: #444; font-size: 12px; }
+
+        /* --- Mobile Adapt --- */
+        @media (max-width: 768px) {
+            header, .hero, .work-section { padding-left: 30px; padding-right: 30px; }
+            .hero h1 { font-size: 14vw; }
+            .project-list { grid-template-columns: 1fr; gap: 100px; }
+            .project-item:nth-child(even) { margin-top: 0; }
+            .img-mask { height: 50vh; }
+            #cursor { display: none; } * { cursor: auto; }
+        }
+/* --- 标题动效专用样式 (新粘贴的) --- */
+        @keyframes titleReveal {
+            0% { transform: translateY(120px); opacity: 0; clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); }
+            100% { transform: translateY(0); opacity: 1; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        }
+        .animate-title span {
+            display: block; opacity: 0;
+            animation: titleReveal 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+        }
+        .animate-title span:nth-child(1) { animation-delay: 0.2s; }
+        .animate-title span:nth-child(2) { animation-delay: 0.35s; }
+        .animate-title span:nth-child(3) { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <div id="cursor"></div>
+
+    <header>
+        <div class="logo hover-target">LI YUTING.</div>
+        <ul class="nav-list">
+            <li><a href="#work" class="nav-item hover-target">Work</a></li>
+            <li><a href="mailto:474637648@qq.com" class="nav-item hover-target">Contact</a></li>
+        </ul>
+    </header>
+
+    <section class="hero">
+        <h1 class="animate-title">
+    <span>Visual</span>
+    <span>Communication</span>
+    <span>Designer</span>
+</h1>
+        <div class="hero-desc">
+            <p>你好，我是李雨婷。</p>
+            <p>中央财经大学在读，专注于视觉表现、AIGC探索与交互体验设计。</p>
+        </div>
+        <div class="scroll-hint">Scroll Down</div>
+    </section>
+
+    <section class="work-section" id="work">
+        <div class="project-list">
+            <!-- 1. VR Project -->
+            <a href="project-vr.html" class="project-item hover-target">
+                <div class="img-mask">
+                   <video 
+    src="images/vr-video2.mp4" 
+    class="project-img" 
+    autoplay 
+    muted 
+    loop 
+    playsinline>
+</video>
+                </div>
+                <div class="project-info">
+                    <div><div class="p-title">《项脊轩志》VR</div><div class="p-cat">AIGC / VR / 情感化设计</div></div>
+                    <div class="p-index">01</div>
+                </div>
+            </a>
+            <!-- 2. UI Project -->
+            <a href="project-ui.html" class="project-item hover-target">
+                <div class="img-mask">
+                    <video 
+    src="images/ui-video2.mp4" 
+    class="project-img" 
+    autoplay 
+    muted 
+    loop 
+    playsinline>
+</video>
+                </div>
+                <div class="project-info">
+                    <div><div class="p-title">一时一蔬 · 虚拟UI</div><div class="p-cat">Spatial UI / VisionPro</div></div>
+                    <div class="p-index">02</div>
+                </div>
+            </a>
+            <!-- 3. Illustration -->
+            <a href="project-illu.html" class="project-item hover-target">
+                <div class="img-mask">
+                    <video 
+    src="images/draw-video.mp4" 
+    class="project-img" 
+    autoplay 
+    muted 
+    loop 
+    playsinline>
+</video>
+                </div>
+                <div class="project-info">
+                    <div><div class="p-title">插画展示</div><div class="p-cat">Digital Art / Commercial</div></div>
+                    <div class="p-index">03</div>
+                </div>
+            </a>
+            <!-- 4. Poster -->
+            <a href="project-poster.html" class="project-item hover-target">
+                <div class="img-mask">
+                     <video 
+    src="images/poster-video.mp4" 
+    class="project-img" 
+    autoplay 
+    muted 
+    loop 
+    playsinline>
+</video>
+
+                </div>
+                <div class="project-info">
+                    <div><div class="p-title">海报设计展示</div><div class="p-cat">Typography / Layout</div></div>
+                    <div class="p-index">04</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <h2>Let's work together</h2>
+        <a href="mailto:474637648@qq.com" class="email-link hover-target">474637648@qq.com</a>
+        <div class="copyright">&copy; 2025 Li Yuting. All Rights Reserved.</div>
+    </footer>
+
+    <script>
+        // 交互逻辑
+        const cursor = document.getElementById('cursor');
+        const hoverTargets = document.querySelectorAll('.hover-target');
+        
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+        });
+        hoverTargets.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+        });
+
+        // 视差与Reveal
+        const projectImgs = document.querySelectorAll('.project-img');
+        const projectItems = document.querySelectorAll('.project-item');
+        
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            projectImgs.forEach(img => {
+                const rect = img.parentElement.getBoundingClientRect();
+                if (rect.top < windowHeight && rect.bottom > 0) {
+                    const offset = (rect.top - windowHeight/2) * 0.15;
+                    img.style.transform = `translateY(${offset}px) scale(1.1)`;
+                }
+            });
+            
+            projectItems.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                if (rect.top < windowHeight * 0.85) item.classList.add('in-view');
+            });
+        });
+    </script>
+</body>
+</html>
